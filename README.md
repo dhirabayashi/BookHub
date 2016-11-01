@@ -4,7 +4,7 @@
 ## Installation
 
 ```console
-$ git clone git@github.com:dhirabayashi/BookHub.git
+$ git clone git@github.com:dhirabayashi/sinatra_sample.git
 $ gem install bundler
 $ bundle install --path vendor/bundle
 $ bundle exec rake db:migrate
