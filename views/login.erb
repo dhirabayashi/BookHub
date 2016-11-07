@@ -5,6 +5,13 @@
   <title>BookHub</title>
 </head>
 <body>
+  <% if @messages.to_a.size > 0 %>
+    <% @messages.each do |m| %>
+        <font color="red"><%= m %></font>
+        <br>
+    <% end %>
+  <% end %>
+
   <h1>ログイン</h1>
   <form action="login" method="post">
     <p>

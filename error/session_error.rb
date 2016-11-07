@@ -1,0 +1,2 @@
+class SessionError < StandardError
+end

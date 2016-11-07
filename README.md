@@ -13,5 +13,5 @@ $ bundle exec rake db:migrate
 ## Usage
 
 ```console
-$ bundle exec ruby main.rb
+$ bundle exec rackup
 ```
