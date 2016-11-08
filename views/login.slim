@@ -4,11 +4,9 @@ html lang="ja"
     mata charset="utf-8"
       title BookHub
   body
-    - @messages.to_a.each do |message|
-        font color="red" = message
-        br
+    include header
     h1 ログイン
-    form action="login" method="post"
+    form action="/login" method="post"
       p
         | 名前:
         input name="name" size="20" type="text" /

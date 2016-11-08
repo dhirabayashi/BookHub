@@ -1,15 +1,15 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'slim'
-require './models/user.rb'
-require './error/session_error.rb'
+require 'slim/include'
+Dir.glob('./models/*'){|file| require file}
+Dir.glob('./error/*'){|file| require file}
+Dir.glob('./logic/*'){|file| require file}
 
 enable :sessions
 
 #####################################
 # フィルタ
-#####################################
-
 before do
   # ログイン確認しないパス
   exclude_paths = []
@@ -17,11 +17,11 @@ before do
   exclude_paths << '/login'
   exclude_paths << '/add_user'
 
-  unless exclude_paths.include?(request.path_info)
-      # ログイン確認
-      unless session[:loggedin]
-          raise SessionError
-      end
+  unless exclude_paths.include?(request.path_info) || exclude_paths.include?(request['path'])
+    # ログイン確認
+    unless session[:loggedin]
+        raise SessionError
+    end
   end
 end
 
@@ -34,20 +34,22 @@ get '/' do
 end
 
 post '/login' do
-  if User.exists?(name: request['name'], password: request['password'])
-      session[:loggedin] = true
-      slim :index
+  logic = Login.new(request)
+  if logic.login?
+    session[:loggedin] = true
+    slim :index
   else
-      slim :login
+    @messages = ['ログインできません。名前またはパスワードが間違っています。']
+    slim :login
   end
 end
 
 # menu
 get '/index' do
   if session[:loggedin]
-      slim :index
+    slim :index
   else
-      slim :login
+    slim :login
   end
 end
 
@@ -57,14 +59,22 @@ get '/add_user' do
 end
 
 post '/add_user' do
-  u = User.new
-  u.name = request['name']
-  u.password = request['password']
-  u.mail = request['mail']
+  logic = AddUser.new(request)
+  @messages = logic.validate
+  if @messages.empty?
+    logic.add_user
 
-  u.save!
+    @messages = ["ユーザ：#{request['name']}を登録しました。"]
+    @path = '/login'
+    slim :result
+  else
+    slim :add_user
+  end
+end
 
-  slim :login
+post '/route' do
+  template = request['path'].to_sym
+  slim template
 end
 
 #####################################

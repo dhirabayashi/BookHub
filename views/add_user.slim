@@ -4,14 +4,19 @@ html lang="ja"
     mata charset="utf-8"
       title BookHub
   body
+    include header
     h1 ユーザ登録
-    form action="add_user" method="post"
+    form action="/add_user" method="post"
       p
         | 名前:
         input name="name" size="20" type="text" /
       p
         | パスワード:
         input name="password" size="20" type="password" /
+      p
+        | パスワード確認：
+        input name="confirm" size="20" type="password"
+
       p
         | メール:
         input name="mail" size="40" type="text" /
