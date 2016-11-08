@@ -1,0 +1,19 @@
+doctype html
+html lang="ja"
+  head
+    mata charset="utf-8"
+      title BookHub
+  body
+    h1 ユーザ登録
+    form action="add_user" method="post"
+      p
+        | 名前:
+        input name="name" size="20" type="text" /
+      p
+        | パスワード:
+        input name="password" size="20" type="password" /
+      p
+        | メール:
+        input name="mail" size="40" type="text" /
+      p
+        input type="submit" value="登録" /
